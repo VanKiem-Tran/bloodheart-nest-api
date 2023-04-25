@@ -8,12 +8,10 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { ExpressAdapter } from '@nestjs/platform-express';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import compression from 'compression';
 import { middleware as expressCtx } from 'express-ctx';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
-import { join } from 'lodash';
 import morgan from 'morgan';
 import { initializeTransactionalContext } from 'typeorm-transactional';
 
@@ -21,6 +19,7 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './filters/bad-request.filter';
 import { QueryFailedFilter } from './filters/query-failed.filter';
 import { TranslationInterceptor } from './interceptors/translation-interceptor.service';
+import { setupSwagger } from './setup-swagger';
 import { ApiConfigService } from './shared/services/api-config.service';
 import { TranslationService } from './shared/services/translation.service';
 import { SharedModule } from './shared/shared.module';
@@ -85,18 +84,9 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     await app.startAllMicroservices();
   }
 
-  const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
-    .setVersion('1.0')
-    .addTag('cats')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('documentation', app, document);
-
-  app.useStaticAssets(join(__dirname, '/static'), {
-    prefix: '/documentation',
-  });
+  if (configService.documentationEnabled) {
+    setupSwagger(app);
+  }
 
   app.use(expressCtx);
 
