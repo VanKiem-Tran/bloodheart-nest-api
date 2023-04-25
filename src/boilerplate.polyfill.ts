@@ -57,10 +57,10 @@ function groupRows<T>(
 
     const items = raws.get(id);
 
-    if (!items) {
-      raws.set(id, [rawResult]);
-    } else {
+    if (items) {
       items.push(rawResult);
+    } else {
+      raws.set(id, [rawResult]);
     }
   }
 

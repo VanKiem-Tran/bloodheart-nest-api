@@ -30,12 +30,17 @@ export function ToBoolean(): PropertyDecorator {
   return Transform(
     (params) => {
       switch (params.value) {
-        case 'true':
+        case 'true': {
           return true;
-        case 'false':
+        }
+
+        case 'false': {
           return false;
-        default:
+        }
+
+        default: {
           return params.value;
+        }
       }
     },
     { toClassOnly: true },
@@ -132,12 +137,17 @@ export function S3UrlParser(): PropertyDecorator {
     const key = params.value as string;
 
     switch (params.type) {
-      case TransformationType.CLASS_TO_PLAIN:
+      case TransformationType.CLASS_TO_PLAIN: {
         return GeneratorProvider.getS3PublicUrl(key);
-      case TransformationType.PLAIN_TO_CLASS:
+      }
+
+      case TransformationType.PLAIN_TO_CLASS: {
         return GeneratorProvider.getS3Key(key);
-      default:
+      }
+
+      default: {
         return key;
+      }
     }
   });
 }

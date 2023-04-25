@@ -1,3 +1,5 @@
+import type { AuthUser } from '@supabase/supabase-js';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type Constructor<T, Arguments extends unknown[] = undefined[]> = new (
   ...arguments_: Arguments
@@ -42,3 +44,5 @@ export type KeyOfType<Entity, U> = {
     ? P
     : never;
 }[keyof Entity];
+
+export type SupabaseAuthUser = AuthUser;

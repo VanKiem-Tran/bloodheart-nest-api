@@ -4,7 +4,7 @@ import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { isNil } from 'lodash';
 
 import { UserSubscriber } from '../../entity-subscribers/user-subscriber';
-import { SnakeNamingStrategy } from '../../snake-naming.strategy';
+import { SnakeNamingStrategy } from '../../strategies';
 
 @Injectable()
 export class ApiConfigService {

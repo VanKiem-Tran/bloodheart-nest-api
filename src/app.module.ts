@@ -29,16 +29,16 @@ import { SharedModule } from './shared/shared.module';
       inject: [ApiConfigService],
     }),
     I18nModule.forRootAsync({
+      resolvers: [
+        { use: QueryResolver, options: ['lang'] },
+        AcceptLanguageResolver,
+      ],
       useFactory: (configService: ApiConfigService) => ({
         fallbackLanguage: configService.fallbackLanguage,
         loaderOptions: {
           path: path.join(__dirname, '/i18n/'),
           watch: configService.isDevelopment,
         },
-        resolvers: [
-          { use: QueryResolver, options: ['lang'] },
-          AcceptLanguageResolver,
-        ],
       }),
       imports: [SharedModule],
       inject: [ApiConfigService],
